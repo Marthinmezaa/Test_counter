@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from database import create_database, insert_test, get_all_test
+from database import create_database, insert_test, get_all_test, get_test_by_file_number, delete_test, update_test, get_test_by_id
 from tkinter import messagebox
 
 create_database()
@@ -70,6 +70,13 @@ def open_new_test_form():
     )
 
     save_bttn.place(x=150, y= 230)
+
+# ----------------------
+# Save test
+# ----------------------
+def save_test(self):
+    name = self.name_entry.get().strip()
+
 
 # ----------------------
 # Open list tests
@@ -288,6 +295,31 @@ def open_edit_test():
             messagebox.showerror('Error', 'ID invalido')
             return
         
+        file_number = file_entry.get().strip()
+        test_type = type_entry.get().strip()
+        company = company_entry.get().strip()
+        date_value = date_entry.get().strip()
+        subjects = subjects_entry.get().strip()
+        
+        if not file_number or not test_type or not company or not date_value or not subjects:
+            messagebox.showerror("Error", "Todos los campos deben estar completos.")
+            return
+
+        if not file_number.isdigit():
+            messagebox.showerror("Error", "El legajo debe ser un número entero.")
+            return
+
+        if not subjects.isdigit():
+            messagebox.showerror("Error", "La cantidad de sujetos debe ser un número entero.")
+            return
+
+        from datetime import datetime
+        try:
+            datetime.strptime(date_value, "%Y-%m-%d")
+        except ValueError:
+            messagebox.showerror("Error", "La fecha debe estar en formato YYYY-MM-DD.")
+            return
+
         update = update_test(
             int(test_id),
             file_entry.get(),

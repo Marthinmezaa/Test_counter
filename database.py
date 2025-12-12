@@ -1,7 +1,7 @@
 import sqlite3
 
 # ----------------------
-# Data base
+# Database
 # ----------------------
 def create_database():
     connection = sqlite3.connect('tests.db')
@@ -29,7 +29,7 @@ def insert_test(file_number, test_type, company, date, subjects):
     cursor = connection.cursor()
 
     cursor.execute("""
-        INSERT INTO tests (file_number, test_type, company, date, subjects)
+        INSERT INTO test (file_number, test_type, company, date, subjects)
         VALUES (?, ?, ?, ?, ?)
     """, (file_number, test_type, company, date, subjects))
 
@@ -37,13 +37,13 @@ def insert_test(file_number, test_type, company, date, subjects):
     connection.close()
 
 # ----------------------
-# Get test
+# Get ALL tests
 # ----------------------
 def get_all_test():
     connection = sqlite3.connect('tests.db')
     cursor = connection.cursor()
 
-    cursor.execute("SELECT * FROM tests")
+    cursor.execute("SELECT * FROM test")
     results = cursor.fetchall()
 
     connection.close()
@@ -68,9 +68,9 @@ def delete_test(test_id):
     cursor = connection.cursor()
     cursor.execute('DELETE FROM test WHERE id=?', (test_id,))
     connection.commit()
-    delete_rows = cursor.rowcount
+    deleted_rows = cursor.rowcount
     connection.close()
-    return delete_rows
+    return deleted_rows
 
 # ----------------------
 # Update test by ID
@@ -85,9 +85,9 @@ def update_test(test_id, file_number, test_type, company, date, subjects):
     ''', (file_number, test_type, company, date, subjects, test_id))
 
     connection.commit()
-    update_rows = cursor.rowcount
+    updated_rows = cursor.rowcount
     connection.close()
-    return update_rows
+    return updated_rows
 
 # ----------------------
 # Get test by ID
